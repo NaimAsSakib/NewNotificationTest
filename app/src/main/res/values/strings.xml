@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DurbarNotificationTest</string>
+    <string name="general_channel_title">General Channel</string>
+    <string name="general_channel_description">Channel for general notifications</string>
+</resources>

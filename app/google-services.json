@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1006325308145",
+    "project_id": "durbarnotificationtest",
+    "storage_bucket": "durbarnotificationtest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006325308145:android:87a14d7089cce3c6b5e750",
+        "android_client_info": {
+          "package_name": "com.example.durbarnotificationtest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdmMxJz2gXoalW2CsGuBRwx5j6O10uX5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
