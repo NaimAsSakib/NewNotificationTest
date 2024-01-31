@@ -34,18 +34,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         Log.e("fdgfd", "" + remoteMessage.data.toString())
-        removeBrokenChannel()
-        initNotificationChannel()
-        generateNotification(remoteMessage.data["title"] ?: "title")
+        //removeBrokenChannel()
+        //initNotificationChannel()
+        //generateNotification(remoteMessage.data["title"] ?: "title")
         //showNotification(remoteMessage)
         Log.e("remoteMessage", "onMessageReceived: " )
-       // handleNotification(remoteMessage)
+        handleNotification(remoteMessage)
 
     }
 
     fun generateNotification(message: String) {
         val intent = Intent(this, MainActivity::class.java)
-      //  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        //  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_ONE_SHOT)
@@ -55,9 +55,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var builder: NotificationCompat.Builder =
             NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_name)
-              /*  .setSound(
-                    Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${this.packageName}/${R.raw.cutom_rington_1}")
-                )*/
+                /*  .setSound(
+                      Uri.parse("${ContentResolver.SCHEME_ANDROID_RESOURCE}://${this.packageName}/${R.raw.cutom_rington_1}")
+                  )*/
                 .setAutoCancel(true)
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
                 .setOnlyAlertOnce(true)
@@ -129,7 +129,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val params = remoteMessage.data
         val title = params["title"]?:""
         val body = params["body"]?:""
-       // val mPref = PreferencesHelper(applicationContext)
+        // val mPref = PreferencesHelper(applicationContext)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val m = (Date().time / 1000L % Int.MAX_VALUE).toInt()
@@ -146,22 +146,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         var icon: Bitmap? = null
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val mBuilder = NotificationCompat.Builder(this, "channel-01")
-       // mBuilder.setSmallIcon(R.mipmap.ic_launcher_foreground)
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
         mBuilder.setContentTitle(title)
-       /* if (img != null) {
-            icon = img
-            bigPictureStyle = NotificationCompat.BigPictureStyle()
-            bigPictureStyle.setBigContentTitle(messageTitle)
-            bigPictureStyle.setSummaryText(Html.fromHtml(messageBody).toString())
-            bigPictureStyle.bigPicture(icon)
-            mBuilder.setStyle(bigPictureStyle)
-            mBuilder.setLargeIcon(icon)
-        } else {
-            bigTextStyle = NotificationCompat.BigTextStyle()
-            bigTextStyle.setBigContentTitle(messageTitle)
-            bigTextStyle.bigText(messageBody)
-            mBuilder.setStyle(bigTextStyle)
-        }*/
+        /* if (img != null) {
+             icon = img
+             bigPictureStyle = NotificationCompat.BigPictureStyle()
+             bigPictureStyle.setBigContentTitle(messageTitle)
+             bigPictureStyle.setSummaryText(Html.fromHtml(messageBody).toString())
+             bigPictureStyle.bigPicture(icon)
+             mBuilder.setStyle(bigPictureStyle)
+             mBuilder.setLargeIcon(icon)
+         } else {
+             bigTextStyle = NotificationCompat.BigTextStyle()
+             bigTextStyle.setBigContentTitle(messageTitle)
+             bigTextStyle.bigText(messageBody)
+             mBuilder.setStyle(bigTextStyle)
+         }*/
         bigTextStyle = NotificationCompat.BigTextStyle()
         bigTextStyle.setBigContentTitle(title)
         bigTextStyle.bigText(body)
@@ -179,7 +179,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addNextIntent(intent)
         val resultPendingIntent = stackBuilder.getPendingIntent(
-            0, PendingIntent.FLAG_UPDATE_CURRENT)
+            0, if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.S)PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT)
         mBuilder.setContentIntent(resultPendingIntent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.notify(1, mBuilder.build())
